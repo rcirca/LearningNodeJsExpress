@@ -107,3 +107,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 .idea/watcherTasks.xml
+.idea/vcs.xml

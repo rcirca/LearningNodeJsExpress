@@ -1,12 +1,5 @@
 var express = require('express');
-
-var fortunes = [
-    "conquer your fears or they will conquer you.",
-    "Rivers need springs.",
-    "you will have a pleasant surprise.",
-    "do not fear what you don't know.",
-    "fuck off i know what this is"
-]
+var lameFortunes = require('./lib/lame-fortunes/lame-fortunes');
 
 var app = express();
 
@@ -26,9 +19,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/about', function(req, res) {
-
-    var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-    res.render('about', { fortune: randomFortune });
+    res.render('about', { fortune: lameFortunes.getLameFortune() });
 });
 
 app.use(function(req, res){
