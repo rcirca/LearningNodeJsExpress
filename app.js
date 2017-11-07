@@ -30,6 +30,14 @@ app.get('/about', function(req, res) {
     });
 });
 
+app.get('/tours/hood', function (req, res) {
+   res.render('tours/hood');
+});
+
+app.get('/tours/request-group-rate', function (req, res) {
+    res.render('tours/request-group-rate');
+});
+
 app.use(function(req, res){
     res.status(404);
     res.render('404');
