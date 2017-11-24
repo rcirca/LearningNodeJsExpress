@@ -1,12 +1,24 @@
 var express = require('express');
 var lameFortunes = require('./lib/lame-fortunes/lame-fortunes');
+var fakeWeather = require('./lib/fake-weather/fake-weather');
 
 var app = express();
 
 //handlebars
 var handlebars = require('express-handlebars')
-    .create({defaultLayout: 'main'});
+    .create({
+        defaultLayout: 'main',
+        helpers:{
+            section: function(name, options){
+                if(!this._sections) {
+                    this._sections = {};
+                }
 
+                this._sections[name] = options.fn(this);
+                return null;
+            }
+        }
+    });
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
@@ -19,6 +31,14 @@ app.disable('x-powered-by');
 app.use(function(req, res, next){
    res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
    next();
+});
+
+app.use(function (req, res, next) {
+    if(!res.locals.partials)
+        res.locals.partials = {};
+
+    res.locals.partials.weatherContext = fakeWeather.getWeatherData();
+    next();
 });
 
 app.get('/', function(req, res) {
@@ -46,8 +66,16 @@ app.get('/tours/hood', function (req, res) {
    res.render('tours/hood');
 });
 
+app.get('/tours/oregon', function (req, res) {
+    res.render('tours/oregon');
+});
+
 app.get('/tours/request-group-rate', function (req, res) {
     res.render('tours/request-group-rate');
+});
+
+app.get('/jquery-test', function(req, res){
+    res.render('jquery-test');
 });
 
 app.use(function(req, res){
@@ -60,6 +88,7 @@ app.use(function(err, req, res, next){
     res.status(500);
     res.render('500');
 });
+
 
 app.listen(app.get('port'), function() {
     console.log('Express started on http://localhost:' +
