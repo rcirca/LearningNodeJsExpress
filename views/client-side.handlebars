@@ -1,0 +1,45 @@
+
+{{#section 'head'}}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
+    <script id="clientSideTemplate" type="text/x-handlebars-template">
+        Marry had a little <b>\{{animal}}</b>, its <b>\{{bodyPart}}</b>
+        was <b>\{{adjective}}</b> as <b>\{{noun}}</b>.
+    </script>
+{{/section}}
+
+<div id="clientSide">Click a button...</div>
+<hr>
+<button id="btnClientSide">Generate Client Side</button>
+<button id="btnClientSideAjax">Generate from AJAX</button>
+
+{{#section 'jquery'}}
+    <script>
+        $(document).ready(function(){
+            var clientSideTemplate = Handlebars.compile(
+                    $('#clientSideTemplate').html());
+
+            var $clientSide = $('#clientSide');
+
+            $('#btnClientSide').on('click', function(evt){
+                evt.preventDefault();
+                $clientSide.html(clientSideTemplate({
+                    animal: 'basilisk',
+                    bodyPart: 'horn',
+                    adjective: 'sharp',
+                    noun: 'a needle'
+                }));
+            });
+
+            $('#btnClientSideAjax').on('click', function(evt){
+                evt.preventDefault();
+                $.ajax('/data/client-side', {
+                    success: function(data){
+                        $clientSide.html(clientSideTemplate(data))
+                    }
+                });
+            });
+        });
+
+    </script>
+
+{{/section}}

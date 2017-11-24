@@ -78,6 +78,18 @@ app.get('/jquery-test', function(req, res){
     res.render('jquery-test');
 });
 
+app.get('/client-side', function(req, res){
+    res.render('client-side');
+});
+
+app.get('/data/client-side', function(req, res){
+   res.json({
+       animal: 'Ifrit',
+       bodyPart: 'horns',
+       adjective: 'sharp',
+       noun: 'fire'
+   }) ;
+});
 app.use(function(req, res){
     res.status(404);
     res.render('404');
